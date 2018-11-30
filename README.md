@@ -25,7 +25,7 @@ $simpleGoogleMaps = SimpleGoogleMapsFactory::getByKey(getenv('KEY'));
 $simpleGoogleMaps = SimpleGoogleMapsFactory::getByClientNameAndCryptKey(getenv('CLIENT_NAME'), getenv('CRYPT_KEY'));
 ```
 
-## Geocoding
+### Geocoding
 
 To convert an address to a set of GPS coordinates, use the `geocode` method, as shown below.
 
