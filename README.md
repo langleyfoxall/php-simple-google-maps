@@ -48,10 +48,12 @@ $latitude = $latLng->lat;
 $longitude = $latLng->long;
 ``` 
 
-You can also calculate the distance between two `LatLong` objects by using the `distanceTo` method.
+You can also calculate the distance between two `LatLong` objects by using the `distanceTo` method. The
+distance is returned in kilometers, and takes into account the curvature of the Earth using the Haversine
+formula.
 
 ```php
-$kilometresDistance = $homeCoords->distanceTo($toCoords);
+$distance = $fromCoords->distanceTo($toCoords);
 ```
 
 
