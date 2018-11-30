@@ -3,7 +3,9 @@ This library allows a user to easily communicate with the Google Maps API and re
 ## Installation
 To install, just run the following composer command.
 
-`composer require langleyfoxall/simple-google-maps-api`
+```bash
+composer require langleyfoxall/simple-google-maps-api
+```
 
 Remember to include the `vendor/autoload.php` file if your framework does not do this for you.
 
