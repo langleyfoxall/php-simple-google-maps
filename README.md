@@ -6,7 +6,7 @@ This package provides a simple PHP client for various Google Maps APIs.
 To install, just run the following composer command.
 
 ```bash
-composer require langleyfoxall/simple-google-maps-api
+composer require langleyfoxall/simple-google-maps
 ```
 
 Remember to include the `vendor/autoload.php` file if your framework does not do this for you.
