@@ -52,10 +52,12 @@ class SimpleGoogleMaps
      * Allows partial matches for geocoding operations
      *
      * @param bool $allowPartial
+     * @return SimpleGoogleMaps
      */
     public function allowPartialMatches($allowPartial = true)
     {
         $this->allowPartialMatches = $allowPartial;
+        return $this;
     }
 
     /**
