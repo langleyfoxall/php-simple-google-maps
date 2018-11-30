@@ -1,7 +1,7 @@
 <?php
-namespace RapidWeb\SimpleGoogleMaps\Objects;
+namespace LangleyFoxall\SimpleGoogleMaps\Objects;
 
-use RapidWeb\SimpleGoogleMaps\Interfaces\ApiAuthInterface;
+use LangleyFoxall\SimpleGoogleMaps\Interfaces\ApiAuthInterface;
 use Exception;
 
 class BasicApiAuth implements ApiAuthInterface

@@ -1,7 +1,7 @@
 <?php
-namespace RapidWeb\SimpleGoogleMaps\Objects\CacheDrivers;
+namespace LangleyFoxall\SimpleGoogleMaps\Objects\CacheDrivers;
 
-use RapidWeb\SimpleGoogleMaps\Interfaces\CacheDriverInterface;
+use LangleyFoxall\SimpleGoogleMaps\Interfaces\CacheDriverInterface;
 use rapidweb\RWFileCache\RWFileCache;
 
 class RWFileCacheDriver implements CacheDriverInterface {
