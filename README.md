@@ -9,54 +9,46 @@ Remember to include the `vendor/autoload.php` file if your framework does not do
 
 ## Usage
 
-Creating the SimpleGoogleMaps Object can be done in one of two ways.
-
-The first way is to pass through just the API key that you are provided upon registering for the Google Maps API.
-
+To use Simple Google Maps, you must first create a new instance. This can be done is two ways,
+dependant on whether you have a standard API `key`, or a `clientName` and `cryptKey` (for enterprise
+/ premium plans).
 
 ```php
-use LangleyFoxall\SimpleGoogleMaps\Factories\SimpleGoogleMapsFactory;
-$simpleGoogleMaps = SimpleGoogleMapsFactory::getByKey("[APIKEY]");
+// Standard authentication:
+$simpleGoogleMaps = SimpleGoogleMapsFactory::getByKey(getenv('KEY'));
+
+// Enterprise / premium plan authentication:
+$simpleGoogleMaps = SimpleGoogleMapsFactory::getByClientNameAndCryptKey(getenv('CLIENT_NAME'), getenv('CRYPT_KEY'));
 ```
 
-The second way is to provide your client name and the crypt key that you are provided with upon creating a Google enterprise account.
+## Geocoding
+
+To convert an address to a set of GPS coordinates, use the `geocode` method, as shown below.
 
 ```php
-use LangleyFoxall\SimpleGoogleMaps\Factories\SimpleGoogleMapsFactory;
-$simpleGoogleMaps = SimpleGoogleMapsFactory::getByClientNameAndCryptKey("[CLIENTNAME]","[CRYPTKEY]");
+$latLng = $simpleGoogleMaps->geocode('10 Downing St, Westminster, London SW1A UK');
 ```
 
-Once you have created the object you can then get the coordinates from an address via the `getByAddress` method.
+Optionally, you can allow partial matches to be returned if your input address is not highly accurate. 
+You can do so with the `allowPartialMatches` method, as shown below.
 
 ```php
-$addressline = "10 Downing St, Westminster, London SW1A UK";
-$homeCoords = $simpleGoogleMaps->getByAddress($addressline);
+$latLng = $simpleGoogleMaps->allowPartialMatches()->geocode('test address');
 ```
 
-Optionally, you can allow partial matches to be returned if your input address is not highly accurate. You can do so with the `allowPartialMatches` method, as shown below.
+The above method will return a object of type `LatLong`, which allows you to access the GPS coordinates as
+shown below.
 
 ```php
-$simpleGoogleMaps->allowPartialMatches();
-$homeCoords = $simpleGoogleMaps->getByAddress('test address');
-```
-
-The above method will return a object of type LatLong, this allows you to access the coordinates like so.
-
-```php
-$latitude = $homeCoords->lat;
-$longitude = $homeCoords->long;
+$latitude = $latLng->lat;
+$longitude = $latLng->long;
 ``` 
 
-You can also calculate the distance between two LatLong objects by using the `distanceTo` method on the LatLong Object.
+You can also calculate the distance between two `LatLong` objects by using the `distanceTo` method.
 
 ```php
-$milesBetween = $homeCoords->distanceTo($toCoords);
+$kilometresDistance = $homeCoords->distanceTo($toCoords);
 ```
 
-By default this will return the answer in miles, you may also request the distance in kilometres by adding it to the method call.
-
-```php
-$milesBetween = $homeCoords->distanceTo($toCoords,"kilometres");
-```
 
 
