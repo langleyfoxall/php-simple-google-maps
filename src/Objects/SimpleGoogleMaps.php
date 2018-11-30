@@ -106,4 +106,48 @@ class SimpleGoogleMaps
         return new LatLong($result->geometry->location->lat, $result->geometry->location->lng);
 
     }
+
+    /**
+     * Look ups an LatLng location, and returns a string containing the address of that location.
+     *
+     * @param LatLong $latLong
+     * @return string
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
+    public function reverseGeocode(LatLong $latLong)
+    {
+        $queryUrl = $this->authObject->applyToUrl(
+            $this->baseUrl . "geocode/json?latlng=" . urlencode($latLong->lat.','.$latLong->long)
+        );
+
+        $cacheKey = sha1(serialize([__FUNCTION__, func_get_args()]));
+
+        if (($results = $this->cache->get($cacheKey)) === false) {
+            $response = (new Client())->request('GET', $queryUrl);
+            $results = json_decode($response->getBody());
+        }
+
+        if (!$results) {
+            throw new \Exception('Unable to parse response.');
+        }
+
+        if (!empty($results->error_message)) {
+            throw new \Exception('Error from Google Maps API: '.$results->error_message);
+        }
+
+        if (!$results->results) {
+            return null;
+        }
+
+        $result = $results->results[0];
+
+        if (!isset($result->formatted_address)) {
+            return null;
+        }
+
+        $this->cache->set($cacheKey, $results);
+
+        return (string) $result->formatted_address;
+
+    }
 }
