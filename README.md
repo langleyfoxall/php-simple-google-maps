@@ -1,4 +1,4 @@
-# Simple Google Maps
+# PHP Simple Google Maps
 
 This package provides a simple PHP client for various Google Maps APIs.
 
