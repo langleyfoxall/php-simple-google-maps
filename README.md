@@ -3,7 +3,7 @@ This library allows a user to easily communicate with the Google Maps API and re
 ## Installation
 To install, just run the following composer command.
 
-`composer require rapidwebltd/simple-google-maps-api`
+`composer require langleyfoxall/simple-google-maps-api`
 
 Remember to include the `vendor/autoload.php` file if your framework does not do this for you.
 
@@ -15,14 +15,14 @@ The first way is to pass through just the API key that you are provided upon reg
 
 
 ```php
-use RapidWeb\SimpleGoogleMaps\Factories\SimpleGoogleMapsFactory;
+use LangleyFoxall\SimpleGoogleMaps\Factories\SimpleGoogleMapsFactory;
 $simpleGoogleMaps = SimpleGoogleMapsFactory::getByKey("[APIKEY]");
 ```
 
 The second way is to provide your client name and the crypt key that you are provided with upon creating a Google enterprise account.
 
 ```php
-use RapidWeb\SimpleGoogleMaps\Factories\SimpleGoogleMapsFactory;
+use LangleyFoxall\SimpleGoogleMaps\Factories\SimpleGoogleMapsFactory;
 $simpleGoogleMaps = SimpleGoogleMapsFactory::getByClientNameAndCryptKey("[CLIENTNAME]","[CRYPTKEY]");
 ```
 

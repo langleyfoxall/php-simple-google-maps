@@ -1,15 +1,31 @@
 <?php
-namespace LangleyFoxall\SimpleGoogleMaps\Objects;
+namespace LangleyFoxall\SimpleGoogleMaps\Objects\ApiAuthDrivers;
 
 use LangleyFoxall\SimpleGoogleMaps\Interfaces\ApiAuthInterface;
 use Exception;
 
-class EnterpriseApiAuth implements ApiAuthInterface
+/**
+ * Class EnterpriseApiAuthDriver
+ * @package LangleyFoxall\SimpleGoogleMaps\Objects\ApiAuthDrivers
+ */
+class EnterpriseApiAuthDriver implements ApiAuthInterface
 {
+    /**
+     * @var string API client name
+     */
     private $clientName;
+    /**
+     * @var string API crypt key
+     */
     private $cryptKey;
 
-    public function __construct($clientName,$cryptKey)
+    /**
+     * EnterpriseApiAuthDriver constructor.
+     * @param $clientName
+     * @param $cryptKey
+     * @throws Exception
+     */
+    public function __construct($clientName, $cryptKey)
     {  
         if(!$clientName){
             throw new Exception("ClientName not set");
@@ -22,6 +38,10 @@ class EnterpriseApiAuth implements ApiAuthInterface
         $this->cryptKey = $cryptKey;   
     }
 
+    /**
+     * @param $url
+     * @return string
+     */
     public function applyToUrl($url)
     {
         $urlWithClient = $url."&client=".$this->clientName;

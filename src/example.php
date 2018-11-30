@@ -1,19 +1,24 @@
 <?php
 require_once __DIR__.'/../vendor/autoload.php';
 
-use RapidWeb\SimpleGoogleMaps\Factories\SimpleGoogleMapsFactory;
+use LangleyFoxall\SimpleGoogleMaps\Factories\SimpleGoogleMapsFactory;
 
-$addressline = "10 Downing St, Westminster, London SW1A UK";
-$addressline2 = "holyrood palace, Canongate, Edinburgh EH8 8DX UK";
+$address1 = "10 Downing St, Westminster, London SW1A UK";
+$address2 = "Schott House, Drummond Rd, Stafford ST16 3EL";
 
-$simpleGoogleMaps = SimpleGoogleMapsFactory::getByClientNameAndCryptKey("[CLIENTNAME]","[CRYPTKEY]");
-$simpleGoogleMaps = SimpleGoogleMapsFactory::getByKey("[APIKEY]");
+// Standard authentication:
+$simpleGoogleMaps = SimpleGoogleMapsFactory::getByKey(getenv('KEY'));
 
-$homeCoords = $simpleGoogleMaps->getByAddress($addressline);
-$toCoords = $simpleGoogleMaps->getByAddress($addressline2);
+// Enterprise / premium plan authentication:
+// $simpleGoogleMaps = SimpleGoogleMapsFactory::getByClientNameAndCryptKey(getenv('CLIENT_NAME'), getenv('CRYPT_KEY'));
 
-$milesBetween = $homeCoords->distanceTo($toCoords);
+$fromCoords = $simpleGoogleMaps->geocode($address1);
+$toCoords = $simpleGoogleMaps->geocode($address2);
 
-var_dump($milesBetween);
+var_dump($fromCoords, $toCoords);
+
+$distance = $fromCoords->distanceTo($toCoords);
+
+var_dump($distance);
 
 

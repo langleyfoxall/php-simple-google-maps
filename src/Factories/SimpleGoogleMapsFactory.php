@@ -1,22 +1,18 @@
 <?php
-namespace RapidWeb\SimpleGoogleMaps\Factories;
+namespace LangleyFoxall\SimpleGoogleMaps\Factories;
 
-use RapidWeb\SimpleGoogleMaps\Objects\SimpleGoogleMaps;
+use LangleyFoxall\SimpleGoogleMaps\Objects\SimpleGoogleMaps;
 
 abstract class SimpleGoogleMapsFactory
 {
     public static function getByKey($key)
     {
-      $simpleGoogleMap = new SimpleGoogleMaps($key,null,null);
-
-      return $simpleGoogleMap;
+      return new SimpleGoogleMaps($key,null,null);
     }
 
     public static function getByClientNameAndCryptKey($clientName,$cryptKey)
     {
-      $simpleGoogleMap = new SimpleGoogleMaps(null,$clientName,$cryptKey);
-
-      return $simpleGoogleMap;
+      return new SimpleGoogleMaps(null,$clientName,$cryptKey);
     }
 }
 

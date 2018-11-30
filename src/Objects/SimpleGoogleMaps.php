@@ -1,83 +1,107 @@
 <?php
-namespace RapidWeb\SimpleGoogleMaps\Objects;
+namespace LangleyFoxall\SimpleGoogleMaps\Objects;
 
-use RapidWeb\SimpleGoogleMaps\Objects\BasicApiAuth;
-use RapidWeb\SimpleGoogleMaps\Objects\EnterpriseApiAuth;
-use RapidWeb\SimpleGoogleMaps\Objects\LatLong;
-use RapidWeb\SimpleGoogleMaps\Objects\CacheDrivers\RWFileCacheDriver;
+use LangleyFoxall\SimpleGoogleMaps\Objects\ApiAuthDrivers\BasicApiAuthDriver;
+use LangleyFoxall\SimpleGoogleMaps\Objects\ApiAuthDrivers\EnterpriseApiAuthDriver;
+use LangleyFoxall\SimpleGoogleMaps\Objects\CacheDrivers\DOFileCacheDriver;
 use GuzzleHttp\Client;
 
+/**
+ * Class SimpleGoogleMaps
+ * @package LangleyFoxall\SimpleGoogleMaps\Objects
+ */
 class SimpleGoogleMaps
 {
-  private $authObject;
-  private $baseUrl = "https://maps.googleapis.com/maps/api/";
-  private $allowPartialMatches = false;
-  private $cache = null;
-  
-  public function __construct($key,$clientname,$cryptKey)
-  {
-    if(isset($key) && $key != null) {
-      $this->authObject = new BasicApiAuth($key);
-    } else { 
-      $this->authObject = new EnterpriseApiAuth($clientname,$cryptKey);
+    /**
+     * @var EnterpriseApiAuthDriver
+     */
+    private $authObject;
+    /**
+     * @var string
+     */
+    private $baseUrl = "https://maps.googleapis.com/maps/api/";
+    /**
+     * @var bool
+     */
+    private $allowPartialMatches = false;
+    /**
+     * @var null
+     */
+    private $cache = null;
+
+    /**
+     * SimpleGoogleMaps constructor.
+     * @param $key
+     * @param $clientName
+     * @param $cryptKey
+     * @throws \Exception
+     */
+    public function __construct($key, $clientName, $cryptKey)
+    {
+        if (isset($key) && $key != null) {
+            $this->authObject = new BasicApiAuthDriver($key);
+        } else {
+            $this->authObject = new EnterpriseApiAuthDriver($clientName, $cryptKey);
+        }
+
+        $this->cache = new DOFileCacheDriver;
+
     }
 
-    $this->setupCache();
-
-  }
-
-  private function setupCache()
-  {
-    $this->cache = new RWFileCacheDriver;
-  }
-
-  public function allowPartialMatches()
-  {
-    $this->allowPartialMatches = true;
-  }
-
-  public function getByAddress($address,$format = "json")
-  {
-    $addressQueryParam =  "?address=".urlencode($address);
-
-    $queryUrl = $this->authObject->applyToUrl($this->baseUrl."geocode/".$format.$addressQueryParam);
-
-    $cacheKey = "SimpGoogMaps_".substr(sha1($queryUrl), 0, 2)."_".sha1($queryUrl);
-
-    if (($results = $this->cache->get($cacheKey))===false) {
-
-      $client = new Client();
-
-      $response = $client->request('GET', $queryUrl);
-
-      $results = null;
-
-      if($format == "json"){
-          $results = json_decode($response->getBody());
-      }
-
-      $this->cache->set($cacheKey, $results);
+    /**
+     * Allows partial matches for geocoding operations
+     *
+     * @param bool $allowPartial
+     */
+    public function allowPartialMatches($allowPartial = true)
+    {
+        $this->allowPartialMatches = $allowPartial;
     }
 
-    if(!$results || !$results->results || !isset($results->results[0])) {
-      $this->cache->delete($cacheKey);
-      return null;
+    /**
+     * Look ups an address location, and returns a LatLong object containing its coordinates.
+     *
+     * @param string $address
+     * @return LatLong|null
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws \Exception
+     */
+    public function geocode(string $address)
+    {
+        $queryUrl = $this->authObject->applyToUrl(
+            $this->baseUrl . "geocode/json?address=" . urlencode($address)
+        );
+
+        $cacheKey = sha1(serialize([__FUNCTION__, func_get_args()]));
+
+        if (($results = $this->cache->get($cacheKey)) === false) {
+            $response = (new Client())->request('GET', $queryUrl);
+            $results = json_decode($response->getBody());
+        }
+
+        if (!$results) {
+            throw new \Exception('Unable to parse response.');
+        }
+
+        if (!empty($results->error_message)) {
+            throw new \Exception('Error from Google Maps API: '.$results->error_message);
+        }
+
+        if (!$results->results) {
+            return null;
+        }
+
+        $result = $results->results[0];
+
+        if (!$this->allowPartialMatches) {
+            if (isset($result->partial_match) && $result->partial_match) {
+                return null;
+            }
+        }
+
+        $this->cache->set($cacheKey, $results);
+
+        return new LatLong($result->geometry->location->lat, $result->geometry->location->lng);
+
     }
-
-    if (!$this->allowPartialMatches) {
-      if(isset($results->results[0]->partial_match) && $results->results[0]->partial_match) {
-        $this->cache->delete($cacheKey);
-        return null; 
-      }
-    }
-
-    $latLong = new LatLong($results->results[0]->geometry->location->lat,$results->results[0]->geometry->location->lng);
-
-    return $latLong;
-
-  }
 }
-
-
-
-?>

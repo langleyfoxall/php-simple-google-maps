@@ -1,5 +1,5 @@
 <?php
-namespace RapidWeb\SimpleGoogleMaps\Interfaces;
+namespace LangleyFoxall\SimpleGoogleMaps\Interfaces;
 
 interface CacheDriverInterface
 {
