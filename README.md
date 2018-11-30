@@ -1,4 +1,6 @@
-This library allows a user to easily communicate with the Google Maps API and retrieve a set of coordinates from an address.
+# Simple Google Maps
+
+This package provides a simple PHP client for various Google Maps APIs.
 
 ## Installation
 To install, just run the following composer command.
