@@ -60,4 +60,14 @@ class LatLong
     {
         return new Point($this->lat, $this->long);
     }
+
+    /**
+     * Convert LatLong to 'latitude,longitude' string format.
+     *
+     * @return string
+     */
+    public function __toString()
+    {
+        return $this->lat.','.$this->long;
+    }
 }

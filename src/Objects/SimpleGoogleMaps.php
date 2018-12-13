@@ -170,14 +170,6 @@ class SimpleGoogleMaps
      */
     public function directions($from, $to, $travelMode = TravelMode::DRIVING)
     {
-        if (is_object($from) && get_class($from) === LatLong::class) {
-            $from = $from->lat.','.$from->long;
-        }
-
-        if (is_object($to) && get_class($to) === LatLong::class) {
-            $to = $to->lat.','.$to->long;
-        }
-
         $queryUrl = $this->authObject->applyToUrl(
             $this->baseUrl.'directions/json?origin='.urlencode($from).
                 '&destination='.urlencode($to).'&mode='.$travelMode
