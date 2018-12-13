@@ -196,6 +196,8 @@ class SimpleGoogleMaps
             return null;
         }
 
+        $this->cache->set($cacheKey, $results);
+
         $route = $results->routes[0];
 
         $journey = new Journey();
