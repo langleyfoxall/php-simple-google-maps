@@ -1,15 +1,15 @@
 <?php
+
 namespace LangleyFoxall\SimpleGoogleMaps\Objects\CacheDrivers;
 
 use DivineOmega\DOFileCache\DOFileCache;
 use LangleyFoxall\SimpleGoogleMaps\Interfaces\CacheDriverInterface;
 
 /**
- * Class DOFileCacheDriver
- * @package LangleyFoxall\SimpleGoogleMaps\Objects\CacheDrivers
+ * Class DOFileCacheDriver.
  */
-class DOFileCacheDriver implements CacheDriverInterface {
-
+class DOFileCacheDriver implements CacheDriverInterface
+{
     /**
      * @var DOFileCache|null
      */
@@ -22,16 +22,17 @@ class DOFileCacheDriver implements CacheDriverInterface {
     {
         $this->cache = new DOFileCache();
         $this->cache->changeConfig(
-            array(
-                "cacheDirectory" => __DIR__."/../../../cache/",
-                "gzipCompression" => true
-                )
+            [
+                'cacheDirectory'  => __DIR__.'/../../../cache/',
+                'gzipCompression' => true,
+                ]
             );
     }
 
     /**
      * @param $key
      * @param $value
+     *
      * @return bool
      */
     public function set($key, $value)
@@ -41,8 +42,10 @@ class DOFileCacheDriver implements CacheDriverInterface {
 
     /**
      * @param $key
-     * @return mixed
+     *
      * @throws \Exception
+     *
+     * @return mixed
      */
     public function get($key)
     {
@@ -51,6 +54,7 @@ class DOFileCacheDriver implements CacheDriverInterface {
 
     /**
      * @param $key
+     *
      * @return bool
      */
     public function delete($key)

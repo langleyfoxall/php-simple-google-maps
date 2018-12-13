@@ -7,8 +7,7 @@ use DivineOmega\Distance\Point;
 use DivineOmega\Distance\Types\Haversine;
 
 /**
- * Class LatLong
- * @package LangleyFoxall\SimpleGoogleMaps\Objects
+ * Class LatLong.
  */
 class LatLong
 {
@@ -23,6 +22,7 @@ class LatLong
 
     /**
      * LatLong constructor.
+     *
      * @param $lat
      * @param $long
      */
@@ -38,9 +38,10 @@ class LatLong
      * Haversine formula.
      *
      * @param LatLong $destination
+     *
      * @return mixed
      */
-    public function distanceTo(LatLong $destination)
+    public function distanceTo(self $destination)
     {
         $earthRadius = 6371;
 
@@ -56,7 +57,8 @@ class LatLong
      *
      * @return Point
      */
-    public function getPoint() {
+    public function getPoint()
+    {
         return new Point($this->lat, $this->long);
     }
 }
