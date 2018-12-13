@@ -1,5 +1,7 @@
 # PHP Simple Google Maps
 
+[![StyleCI](https://github.styleci.io/repos/159809368/shield?branch=master)](https://github.styleci.io/repos/159809368)
+
 This package provides a simple PHP client for various Google Maps APIs.
 
 ## Installation
