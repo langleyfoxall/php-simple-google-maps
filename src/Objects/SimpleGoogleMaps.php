@@ -5,6 +5,7 @@ use LangleyFoxall\SimpleGoogleMaps\Objects\ApiAuthDrivers\BasicApiAuthDriver;
 use LangleyFoxall\SimpleGoogleMaps\Objects\ApiAuthDrivers\EnterpriseApiAuthDriver;
 use LangleyFoxall\SimpleGoogleMaps\Objects\CacheDrivers\DOFileCacheDriver;
 use GuzzleHttp\Client;
+use LangleyFoxall\SimpleGoogleMaps\Objects\Enums\TravelMode;
 
 /**
  * Class SimpleGoogleMaps
@@ -149,5 +150,79 @@ class SimpleGoogleMaps
 
         return (string) $result->formatted_address;
 
+    }
+
+    /**
+     * Retrieves directions between two points ($from, and $to), using the travel mode
+     * defined by the $travelMode (TravelMode enum).
+     *
+     * @param LatLong|string $from
+     * @param LatLong|string $to
+     * @param string $travelMode
+     * @return Journey|null
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
+    public function directions($from, $to, $travelMode = TravelMode::DRIVING) {
+
+        if (is_object($from) && get_class($from) === LatLong::class) {
+            $from = $from->lat.','.$from->long;
+        }
+
+        if (is_object($to) && get_class($to) === LatLong::class) {
+            $to = $to->lat.','.$to->long;
+        }
+
+        $queryUrl = $this->authObject->applyToUrl(
+            $this->baseUrl.'directions/json?origin='.urlencode($from).
+                '&destination='.urlencode($to).'&mode='.$travelMode
+        );
+
+        $cacheKey = sha1(serialize([__FUNCTION__, func_get_args()]));
+
+        if (($results = $this->cache->get($cacheKey)) === false) {
+            $response = (new Client())->request('GET', $queryUrl);
+            $results = json_decode($response->getBody());
+        }
+
+        if (!$results) {
+            throw new \Exception('Unable to parse response.');
+        }
+
+        if (!empty($results->error_message)) {
+            throw new \Exception('Error from Google Maps API: '.$results->error_message);
+        }
+
+        if (!$results->routes) {
+            return null;
+        }
+
+        $route = $results->routes[0];
+
+        $journey = new Journey();
+
+        foreach($route->legs as $routeLeg) {
+            foreach($routeLeg->steps as $step) {
+
+                $description = html_entity_decode(str_replace('  ', ' ',
+                    preg_replace('#<[^>]+>#', ' ', $step->html_instructions)
+                ));
+
+                $journey->push(new JourneyStep(
+                    new LatLong(
+                        $step->start_location->lat,
+                        $step->start_location->lng
+                    ),
+                    new LatLong(
+                        $step->end_location->lat,
+                        $step->end_location->lng
+                    ),
+                    $step->distance->value,
+                    $step->duration->value,
+                    $description
+                ));
+            }
+        }
+
+        return $journey;
     }
 }
