@@ -76,6 +76,9 @@ three parameters, the origin, the destination, and optionally the travel mode as
 See the example usage below.
 
 ```php
+$address1 = "10 Downing St, Westminster, London SW1A UK";
+$address2 = "Schott House, Drummond Rd, Stafford ST16 3EL";
+
 $journey = $simpleGoogleMaps->directions($address1, $address2, TravelMode::DRIVING);
 
 foreach($journey as $step) {
