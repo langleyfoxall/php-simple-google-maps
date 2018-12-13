@@ -1,5 +1,4 @@
 <?php
-
 namespace LangleyFoxall\SimpleGoogleMaps\Objects;
 
 use Illuminate\Support\Collection;

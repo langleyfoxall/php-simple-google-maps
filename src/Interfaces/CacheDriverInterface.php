@@ -1,5 +1,4 @@
 <?php
-
 namespace LangleyFoxall\SimpleGoogleMaps\Interfaces;
 
 interface CacheDriverInterface

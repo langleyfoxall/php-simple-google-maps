@@ -1,5 +1,4 @@
 <?php
-
 namespace LangleyFoxall\SimpleGoogleMaps\Factories;
 
 use LangleyFoxall\SimpleGoogleMaps\Objects\SimpleGoogleMaps;

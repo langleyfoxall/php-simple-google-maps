@@ -1,5 +1,4 @@
 <?php
-
 namespace LangleyFoxall\SimpleGoogleMaps\Objects\CacheDrivers;
 
 use DivineOmega\DOFileCache\DOFileCache;
