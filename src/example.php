@@ -1,11 +1,13 @@
 <?php
+
 require_once __DIR__.'/../vendor/autoload.php';
 
 use LangleyFoxall\SimpleGoogleMaps\Factories\SimpleGoogleMapsFactory;
+use LangleyFoxall\SimpleGoogleMaps\Objects\Enums\TravelMode;
 use LangleyFoxall\SimpleGoogleMaps\Objects\LatLong;
 
-$address1 = "10 Downing St, Westminster, London SW1A UK";
-$address2 = "Schott House, Drummond Rd, Stafford ST16 3EL";
+$address1 = '10 Downing St, Westminster, London SW1A UK';
+$address2 = 'Schott House, Drummond Rd, Stafford ST16 3EL';
 
 // Standard authentication:
 $simpleGoogleMaps = SimpleGoogleMapsFactory::getByKey(getenv('KEY'));
@@ -32,3 +34,19 @@ $reverseGeocodeAddress1 = $simpleGoogleMaps->reverseGeocode(new LatLong(51.50336
 $reverseGeocodeAddress2 = $simpleGoogleMaps->reverseGeocode(new LatLong(52.8220531, -2.1127185));
 
 var_dump($reverseGeocodeAddress1, $reverseGeocodeAddress2);
+
+echo 'Directions:'.PHP_EOL;
+
+$journey = $simpleGoogleMaps->directions($address1, $address2, TravelMode::DRIVING);
+
+foreach ($journey as $step) {
+    echo $step->duration.' secs  ';
+    echo "\t";
+    echo $step->distance.' m    ';
+    echo "\t";
+    echo $step->description;
+    echo PHP_EOL;
+}
+
+echo 'Totals: '.$journey->duration().' secs, '.$journey->distance().' km';
+echo PHP_EOL;

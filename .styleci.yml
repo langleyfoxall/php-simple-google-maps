@@ -1,0 +1,6 @@
+preset: psr2
+
+risky: false
+
+enabled:
+  - no_blank_lines_before_namespace

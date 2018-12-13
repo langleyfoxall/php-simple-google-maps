@@ -1,12 +1,11 @@
 <?php
 namespace LangleyFoxall\SimpleGoogleMaps\Objects\ApiAuthDrivers;
 
-use LangleyFoxall\SimpleGoogleMaps\Interfaces\ApiAuthInterface;
 use Exception;
+use LangleyFoxall\SimpleGoogleMaps\Interfaces\ApiAuthInterface;
 
 /**
- * Class BasicApiAuthDriver
- * @package LangleyFoxall\SimpleGoogleMaps\Objects\ApiAuthDrivers
+ * Class BasicApiAuthDriver.
  */
 class BasicApiAuthDriver implements ApiAuthInterface
 {
@@ -17,28 +16,29 @@ class BasicApiAuthDriver implements ApiAuthInterface
 
     /**
      * BasicApiAuthDriver constructor.
+     *
      * @param $key
+     *
      * @throws Exception
      */
     public function __construct($key)
     {
-        if(!$key){
-            throw new Exception("No key set");
+        if (!$key) {
+            throw new Exception('No key set');
         }
         $this->key = $key;
     }
 
     /**
      * @param $url
+     *
      * @return string
      */
     public function applyToUrl($url)
     {
-        $authString= "&key=".$this->key;
+        $authString = '&key='.$this->key;
         $appendedUrl = $url.$authString;
 
         return $appendedUrl;
     }
 }
-
-?>

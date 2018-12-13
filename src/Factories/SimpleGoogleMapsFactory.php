@@ -7,15 +7,11 @@ abstract class SimpleGoogleMapsFactory
 {
     public static function getByKey($key)
     {
-      return new SimpleGoogleMaps($key,null,null);
+        return new SimpleGoogleMaps($key, null, null);
     }
 
-    public static function getByClientNameAndCryptKey($clientName,$cryptKey)
+    public static function getByClientNameAndCryptKey($clientName, $cryptKey)
     {
-      return new SimpleGoogleMaps(null,$clientName,$cryptKey);
+        return new SimpleGoogleMaps(null, $clientName, $cryptKey);
     }
 }
-
-
-
-?>
