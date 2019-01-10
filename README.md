@@ -1,6 +1,7 @@
 # PHP Simple Google Maps
 
 [![StyleCI](https://github.styleci.io/repos/159809368/shield?branch=master)](https://github.styleci.io/repos/159809368)
+[![](https://img.shields.io/packagist/dt/langleyfoxall/simple-google-maps.svg)](https://packagist.org/packages/langleyfoxall/simple-google-maps/stats)
 
 This package provides a simple PHP client for various Google Maps APIs.
 
