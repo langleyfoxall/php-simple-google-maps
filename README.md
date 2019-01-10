@@ -60,7 +60,7 @@ $distance = $fromCoords->distanceTo($toCoords);
 
 ### Reverse Geocoding
 
-To lookup an address from a set of GPD coordinate, use the `reverseGeocode` method, as shown below.
+To lookup an address from a set of GPS coordinate, use the `reverseGeocode` method, as shown below.
 
 ```php
 $address = $simpleGoogleMaps->reverseGeocode(new LatLong(51.5033635, -0.1276248));
