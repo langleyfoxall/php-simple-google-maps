@@ -2,7 +2,7 @@
     "name": "langleyfoxall/simple-google-maps",
     "description": "Simple PHP client for various Google Maps APIs",
     "require": {
-        "guzzlehttp/guzzle": "^6.2",
+        "guzzlehttp/guzzle": "^6.2||^7.0",
         "divineomega/do-file-cache": "^2.0",
         "divineomega/php-distance": "^1.0",
         "laravel/framework": "^5.1||^6.0||^7.0||^8.0",
